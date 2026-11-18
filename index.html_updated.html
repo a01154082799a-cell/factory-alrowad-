@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مصنع الرواد</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f8;color:#17233b;font-family:Tahoma,Arial,sans-serif}
+header{background:#101d35;color:#fff;padding:20px 5%;border-bottom:4px solid #c9a44c}
+h1{margin:0;font-size:25px}.sub{color:#d6dce7;font-size:13px;margin-top:5px}
+main{max-width:1100px;margin:25px auto;padding:0 15px}.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:17px;box-shadow:0 3px 14px #17233b12}
+input,button{font:inherit;padding:11px;border-radius:7px;border:1px solid #ccd3df;margin:4px 0}
+input{width:100%}button{background:#172945;color:#fff;border:0;cursor:pointer;padding:10px 16px}
+button.gold{background:#b28b35}button.red{background:#a33b3b}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.nav button{background:#e8edf4;color:#17233b}.nav button.active{background:#172945;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+table{width:100%;border-collapse:collapse;margin-top:12px;min-width:650px}
+th,td{padding:10px;border-bottom:1px solid #e5e9ef;text-align:right}th{background:#f6f7fa}
+.hidden{display:none}.muted{color:#65718a;font-size:13px}.error{color:#9a3434;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<header><h1>مصنع الرواد</h1><div class="sub">إدارة المنتجات والعملاء والموردين — نسخة اختبار</div></header>
+<main>
+<section class="card" id="login">
+<h2>تسجيل دخول المدير</h2>
+<input id="email" type="email" placeholder="البريد الإلكتروني">
+<input id="password" type="password" placeholder="كلمة المرور">
+<button class="gold" id="loginBtn">دخول</button><div id="loginMsg" class="error"></div>
+</section>
+<section id="app" class="hidden">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+<h2 style="margin:0">لوحة الإدارة</h2><button id="logoutBtn">تسجيل خروج</button>
+</div>
+<div class="nav">
+<button class="active" data-tab="products">المنتجات</button>
+<button data-tab="customers">العملاء</button>
+<button data-tab="suppliers">الموردون</button>
+ <button data-tab="sales">فواتير البيع</button>
+ <button data-tab="purchases">فواتير الشراء</button>
+ <button data-tab="expenses">المصروفات</button>
+ <button data-tab="payments">تحصيلات ومدفوعات</button>
+ <button data-tab="cash">الخزنة</button>
+</div>
+<div id="status" class="muted">متصل</div>
+</div>
+
+<section class="card module" id="products">
+<h2>المنتجات والمخزون</h2>
+<input id="p_search" placeholder="ابحث باسم المنتج أو الكود">
+<h3>إضافة / تعديل منتج</h3>
+<div class="grid">
+<input id="p_code" placeholder="كود المنتج"><input id="p_name" placeholder="اسم المنتج">
+<input id="p_cost" type="number" step="0.01" placeholder="سعر التكلفة">
+<input id="p_price" type="number" step="0.01" placeholder="سعر البيع">
+<input id="p_qty" type="number" step="1" placeholder="الكمية">
+</div>
+<button class="gold" id="p_save">حفظ المنتج</button><button id="p_clear">تفريغ الحقول</button>
+<div id="p_msg" class="muted"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>الكود</th><th>المنتج</th><th>التكلفة</th><th>البيع</th><th>الكمية</th><th>إجراء</th></tr></thead><tbody id="p_rows"></tbody></table></div>
+</section>
+
+<section class="card module hidden" id="customers">
+<h2>العملاء</h2>
+<input id="c_search" placeholder="ابحث باسم العميل أو رقم الهاتف">
+<h3>إضافة / تعديل عميل</h3>
+<div class="grid">
+<input id="c_name" placeholder="اسم العميل"><input id="c_phone" placeholder="رقم الهاتف">
+<input id="c_address" placeholder="العنوان"><input id="c_balance" type="number" step="0.01" placeholder="الرصيد">
+</div>
+<button class="gold" id="c_save">حفظ العميل</button><button id="c_clear">تفريغ الحقول</button>
+<div id="c_msg" class="muted"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>العنوان</th><th>الرصيد</th><th>إجراء</th></tr></thead><tbody id="c_rows"></tbody></table></div>
+</section>
+
+<section class="card module hidden" id="suppliers">
+<h2>الموردون</h2>
+<input id="s_search" placeholder="ابحث باسم المورد أو رقم الهاتف">
+<h3>إضافة / تعديل مورد</h3>
+<div class="grid">
+<input id="s_name" placeholder="اسم المورد"><input id="s_phone" placeholder="رقم الهاتف">
+<input id="s_address" placeholder="العنوان"><input id="s_balance" type="number" step="0.01" placeholder="الرصيد">
+</div>
+<button class="gold" id="s_save">حفظ المورد</button><button id="s_clear">تفريغ الحقول</button>
+<div id="s_msg" class="muted"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>العنوان</th><th>الرصيد</th><th>إجراء</th></tr></thead><tbody id="s_rows"></tbody></table></div>
+</section>
+
+<section class="card module hidden" id="sales">
+ <h2>فاتورة بيع جديدة</h2>
+ <div class="grid">
+  <select id="sale_party"><option value="">اختر العميل</option></select>
+  <select id="sale_method"><option value="cash">نقدي</option><option value="bank">تحويل بنكي</option><option value="credit">آجل</option></select>
+  <input id="sale_discount" type="number" min="0" step="0.01" placeholder="الخصم">
+  <input id="sale_paid" type="number" min="0" step="0.01" placeholder="المدفوع">
+  <input id="sale_note" placeholder="ملاحظات الفاتورة">
+ </div>
+ <h3>إضافة منتج</h3>
+ <div class="grid">
+  <select id="sale_product"><option value="">اختر المنتج</option></select>
+  <input id="sale_qty" type="number" min="0.001" step="0.001" placeholder="الكمية">
+  <input id="sale_price" type="number" min="0" step="0.01" placeholder="سعر البيع">
+ </div>
+ <button id="sale_add">إضافة للفاتورة</button>
+ <div style="overflow-x:auto"><table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th><th>إجراء</th></tr></thead><tbody id="sale_cart"></tbody></table></div>
+ <h3 id="sale_total">الإجمالي: 0</h3>
+ <button class="gold" id="sale_save">حفظ فاتورة البيع</button><div id="sale_msg" class="muted"></div>
+</section>
+
+<section class="card module hidden" id="purchases">
+ <h2>فاتورة شراء جديدة</h2>
+ <div class="grid">
+  <select id="purchase_party"><option value="">اختر المورد</option></select>
+  <select id="purchase_method"><option value="cash">نقدي</option><option value="bank">تحويل بنكي</option><option value="credit">آجل</option></select>
+  <input id="purchase_discount" type="number" min="0" step="0.01" placeholder="الخصم">
+  <input id="purchase_paid" type="number" min="0" step="0.01" placeholder="المدفوع">
+  <input id="purchase_note" placeholder="ملاحظات الفاتورة">
+ </div>
+ <h3>إضافة منتج</h3>
+ <div class="grid">
+  <select id="purchase_product"><option value="">اختر المنتج</option></select>
+  <input id="purchase_qty" type="number" min="0.001" step="0.001" placeholder="الكمية">
+  <input id="purchase_price" type="number" min="0" step="0.01" placeholder="سعر الشراء">
+ </div>
+ <button id="purchase_add">إضافة للفاتورة</button>
+ <div style="overflow-x:auto"><table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th><th>إجراء</th></tr></thead><tbody id="purchase_cart"></tbody></table></div>
+ <h3 id="purchase_total">الإجمالي: 0</h3>
+ <button class="gold" id="purchase_save">حفظ فاتورة الشراء</button><div id="purchase_msg" class="muted"></div>
+</section>
+<section class="card module hidden" id="expenses">
+ <h2>تسجيل المصروفات</h2>
+ <div class="grid">
+  <input id="e_category" placeholder="نوع المصروف (إيجار، كهرباء...)">
+  <input id="e_amount" type="number" min="0.01" step="0.01" placeholder="المبلغ">
+  <input id="e_date" type="date">
+  <select id="e_method"><option value="cash">نقدي</option><option value="bank">تحويل بنكي</option></select>
+  <input id="e_description" placeholder="بيان المصروف">
+ </div>
+ <button class="gold" id="e_save">حفظ المصروف</button>
+ <div id="e_msg" class="muted"></div>
+ <div style="overflow-x:auto"><table><thead><tr><th>التاريخ</th><th>النوع</th><th>البيان</th><th>المبلغ</th><th>طريقة الدفع</th></tr></thead><tbody id="e_rows"></tbody></table></div>
+</section>
+<section class="card module hidden" id="payments">
+ <h2>تسجيل تحصيل أو دفع</h2>
+ <div class="grid">
+  <select id="pay_party_type"><option value="customer">عميل</option><option value="supplier">مورد</option></select>
+  <select id="pay_party"><option value="">اختر الطرف</option></select>
+  <select id="pay_operation"><option value="collection">تحصيل</option><option value="payment">دفع</option></select>
+  <input id="pay_amount" type="number" min="0.01" step="0.01" placeholder="المبلغ">
+  <input id="pay_date" type="date">
+  <select id="pay_method"><option value="cash">نقدي</option><option value="bank">تحويل بنكي</option></select>
+  <input id="pay_note" placeholder="ملاحظات">
+ </div>
+ <button class="gold" id="pay_save">حفظ العملية</button>
+ <div id="pay_msg" class="muted"></div>
+ <div style="overflow-x:auto"><table><thead><tr><th>التاريخ</th><th>الطرف</th><th>النوع</th><th>العملية</th><th>المبلغ</th></tr></thead><tbody id="pay_rows"></tbody></table></div>
+</section>
+<section class="card module hidden" id="cash">
+ <h2>حركة الخزنة</h2>
+ <div id="cash_total" class="muted">جاري تحميل الحركات...</div>
+ <div style="overflow-x:auto"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>البيان</th><th>طريقة الدفع</th><th>المبلغ</th></tr></thead><tbody id="cash_rows"></tbody></table></div>
+</section>
+</section>
+<p class="muted">تنبيه مهم: هذه نسخة اختبار أولية. شاشة الفواتير تحفظ الفاتورة وبنودها وتُحدّث المخزون عند إضافة البنود. تعديل الفواتير وإلغاؤها والمرتجعات وتحديث أرصدة العملاء والموردين والتقارير وصلاحيات الموظفين لم تكتمل بعد. أضيفت شاشات المصروفات والتحصيلات والمدفوعات وعرض الخزنة، ويجب اختبارها على بيانات تجريبية. اختبر ببيانات تجريبية فقط، ولا تعتمد عليها في البيع الحقيقي حتى استكمال الاختبارات ومراجعة الأمان.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://lctdfdukxexmdcttenmr.supabase.co";
+const KEY="sb_publishable_0Z7G5wlwPP8NTC19QSxW4Q_fWbyeuHf";
+const db=window.supabase.createClient(SUPABASE_URL,KEY);
+let user=null, pData=[], cData=[], sData=[], edit={products:null,customers:null,suppliers:null};
+const $=id=>document.getElementById(id);
+function note(id,t){$(id).textContent=t}
+function val(id){return $(id).value.trim()}
+function num(id){return Number($(id).value||0)}
+function clear(prefix,fields){edit[prefix==="p"?"products":prefix==="c"?"customers":"suppliers"]=null;fields.forEach(x=>$(prefix+"_"+x).value="");$(prefix+"_save").textContent=prefix==="p"?"حفظ المنتج":prefix==="c"?"حفظ العميل":"حفظ المورد"}
+function switchTab(tab){
+ document.querySelectorAll(".module").forEach(x=>x.classList.add("hidden"));
+ $(tab).classList.remove("hidden");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+function actionButtons(kind,row,td){
+ const e=document.createElement("button");e.textContent="تعديل";e.onclick=()=>{
+  edit[kind]=row.id;
+  if(kind==="products"){["code","name","cost","price","qty"].forEach(k=>$("p_"+k).value=row[k]??"");$("p_save").textContent="حفظ التعديل";}
+  else {const x=kind==="customers"?"c":"s";["name","phone","address","balance"].forEach(k=>$(x+"_"+k).value=row[k]??"");$(x+"_save").textContent="حفظ التعديل";}
+  window.scrollTo({top:0,behavior:"smooth"});
+ };
+ const d=document.createElement("button");d.textContent="حذف";d.className="red";d.onclick=async()=>{
+  if(!confirm("متأكد من حذف السجل؟"))return;
+  const {error}=await db.from(kind).delete().eq("id",row.id).eq("owner_id",user.id);
+  if(error){note(kind==="products"?"p_msg":kind==="customers"?"c_msg":"s_msg","تعذر الحذف: "+error.message);return}
+  await loadKind(kind);
+ };
+ td.append(e,d);
+}
+function draw(kind,data,search){
+ const prefix=kind==="products"?"p":kind==="customers"?"c":"s";
+ const tbody=$(prefix+"_rows");tbody.innerHTML="";
+ const q=$(prefix+"_search").value.toLowerCase();
+ data.filter(r=>[r.name,r.code,r.phone].some(v=>(v||"").toLowerCase().includes(q))).forEach(r=>{
+  const tr=document.createElement("tr");
+  const keys=kind==="products"?["code","name","cost","price","qty"]:["name","phone","address","balance"];
+  keys.forEach(k=>{const td=document.createElement("td");td.textContent=r[k]??"";tr.appendChild(td)});
+  const td=document.createElement("td");actionButtons(kind,r,td);tr.appendChild(td);tbody.appendChild(tr);
+ });
+ note(prefix+"_msg","عدد السجلات: "+data.length);
+}
+async function loadKind(kind){
+ const map={products:["id,owner_id,code,name,cost,price,qty","name"],customers:["id,owner_id,name,phone,address,balance,created_at","name"],suppliers:["id,owner_id,name,phone,address,balance,created_at","name"]};
+ const {data,error}=await db.from(kind).select(map[kind][0]).eq("owner_id",user.id).order(map[kind][1]);
+ const prefix=kind==="products"?"p":kind==="customers"?"c":"s";
+ if(error){note(prefix+"_msg","تعذر تحميل البيانات: "+error.message);return}
+ if(kind==="products")pData=data||[];if(kind==="customers")cData=data||[];if(kind==="suppliers")sData=data||[];
+ draw(kind,data||[]);
+ if(kind==="products"||kind==="customers"||kind==="suppliers") await refreshInvoiceChoices();
+}
+async function loadAll(){await loadKind("products");await loadKind("customers");await loadKind("suppliers");await refreshInvoiceChoices()}
+$("loginBtn").onclick=async()=>{
+ note("loginMsg","جاري تسجيل الدخول...");
+ const {data,error}=await db.auth.signInWithPassword({email:val("email"),password:$("password").value});
+ if(error){note("loginMsg","تعذر تسجيل الدخول: "+error.message);return}
+ user=data.user;$("login").classList.add("hidden");$("app").classList.remove("hidden");await loadAll();
+};
+$("logoutBtn").onclick=async()=>{await db.auth.signOut();location.reload()};
+$("p_save").onclick=async()=>{
+ if(!user){note("p_msg","انتهت الجلسة. سجّل الدخول مرة أخرى.");return}
+ if(!val("p_name")){note("p_msg","اكتب اسم المنتج");return}
+ const btn=$("p_save");
+ const payload={owner_id:user.id,code:val("p_code"),name:val("p_name"),cost:num("p_cost"),price:num("p_price"),qty:num("p_qty")};
+ btn.disabled=true;
+ note("p_msg","جاري حفظ المنتج...");
+ try{
+  const query=edit.products?db.from("products").update(payload).eq("id",edit.products).eq("owner_id",user.id):db.from("products").insert(payload);
+  const {error}=await query;
+  if(error){note("p_msg","تعذر الحفظ: "+error.message);return}
+  clear("p",["code","name","cost","price","qty"]);
+  await loadKind("products");
+  note("p_msg","تم حفظ المنتج بنجاح وتحديث قائمة المنتجات.");
+ }catch(err){
+  note("p_msg","حدث خطأ أثناء الحفظ: "+(err?.message||String(err)));
+ }finally{
+  btn.disabled=false;
+ }
+};
+$("c_save").onclick=()=>saveContact("customers","c");
+$("s_save").onclick=()=>saveContact("suppliers","s");
+async function saveContact(kind,x){
+ if(!val(x+"_name")){note(x+"_msg","اكتب الاسم أولاً");return}
+ const payload={owner_id:user.id,name:val(x+"_name"),phone:val(x+"_phone"),address:val(x+"_address"),balance:num(x+"_balance")};
+ const query=edit[kind]?db.from(kind).update(payload).eq("id",edit[kind]).eq("owner_id",user.id):db.from(kind).insert(payload);
+ const {error}=await query;if(error){note(x+"_msg","تعذر الحفظ: "+error.message);return}
+ clear(x,["name","phone","address","balance"]);await loadKind(kind);
+}
+$("p_clear").onclick=()=>clear("p",["code","name","cost","price","qty"]);
+$("c_clear").onclick=()=>clear("c",["name","phone","address","balance"]);
+$("s_clear").onclick=()=>clear("s",["name","phone","address","balance"]);
+["p","c","s"].forEach(x=>$(x+"_search").oninput=()=>draw(x==="p"?"products":x==="c"?"customers":"suppliers",x==="p"?pData:x==="c"?cData:sData));
+
+let invoiceCarts={sale:[],purchase:[]};
+const money=n=>Number(n||0).toFixed(2);
+function fillSelect(id,rows,placeholder){const el=$(id);el.innerHTML='';const first=document.createElement('option');first.value='';first.textContent=placeholder;el.appendChild(first);rows.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name+(r.code?' — '+r.code:'');el.appendChild(o)})}
+async function refreshInvoiceChoices(){
+ // قراءة القوائم مباشرة من قاعدة البيانات لضمان ظهور المنتجات الجديدة
+ const [pr, cr, sr] = await Promise.all([
+  db.from('products').select('id,owner_id,code,name,cost,price,qty').eq('owner_id',user.id).order('name'),
+  db.from('customers').select('id,name').eq('owner_id',user.id).order('name'),
+  db.from('suppliers').select('id,name').eq('owner_id',user.id).order('name')
+ ]);
+ if(pr.error){note('sale_msg','تعذر تحميل المنتجات: '+pr.error.message);note('purchase_msg','تعذر تحميل المنتجات: '+pr.error.message);return}
+ if(cr.error){note('sale_msg','تعذر تحميل العملاء: '+cr.error.message);return}
+ if(sr.error){note('purchase_msg','تعذر تحميل الموردين: '+sr.error.message);return}
+ pData=pr.data||[]; cData=cr.data||[]; sData=sr.data||[];
+ fillSelect('sale_party',cData,'اختر العميل');fillSelect('purchase_party',sData,'اختر المورد');
+ fillSelect('sale_product',pData,'اختر المنتج');fillSelect('purchase_product',pData,'اختر المنتج');
+ note('sale_msg','تم تحميل '+pData.length+' منتج');note('purchase_msg','تم تحميل '+pData.length+' منتج');
+}
+function drawCart(kind){const body=$(kind+'_cart');body.innerHTML='';let total=0;invoiceCarts[kind].forEach((it,i)=>{const line=it.qty*it.price;total+=line;const tr=document.createElement('tr');[it.name,it.qty,money(it.price),money(line)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});const td=document.createElement('td');const b=document.createElement('button');b.className='red';b.textContent='حذف';b.onclick=()=>{invoiceCarts[kind].splice(i,1);drawCart(kind)};td.appendChild(b);tr.appendChild(td);body.appendChild(tr)});$(kind+'_total').textContent='الإجمالي قبل الخصم: '+money(total);}
+function addCartItem(kind){const productId=$(kind+'_product').value;const qty=Number($(kind+'_qty').value);const price=Number($(kind+'_price').value);const p=pData.find(x=>x.id===productId);if(!p){note(kind+'_msg','اختر منتجًا أولاً');return}if(!(qty>0)||!(price>=0)){note(kind+'_msg','أدخل كمية وسعرًا صحيحين');return}if(kind==='sale'&&qty>Number(p.qty||0)){note(kind+'_msg','الكمية المطلوبة أكبر من المتاح بالمخزون ('+(p.qty||0)+')');return}invoiceCarts[kind].push({product_id:p.id,name:p.name,qty,price,cost:kind==='purchase'?price:Number(p.cost||0)});$(kind+'_qty').value='';$(kind+'_price').value='';drawCart(kind);note(kind+'_msg','تمت إضافة المنتج للفاتورة')}
+async function saveInvoice(kind){
+ const partyId=$(kind+'_party').value;const cart=invoiceCarts[kind];const prefix=kind;const msg=prefix+'_msg';
+ if(!partyId){note(msg,kind==='sale'?'اختر العميل':'اختر المورد');return}if(!cart.length){note(msg,'أضف منتجًا واحدًا على الأقل');return}
+ const subtotal=cart.reduce((a,x)=>a+x.qty*x.price,0);const discount=Number($(prefix+'_discount').value||0);const paid=Number($(prefix+'_paid').value||0);const total=subtotal-discount;
+ if(discount<0||discount>subtotal||paid<0||paid>total){note(msg,'راجع قيمة الخصم أو المبلغ المدفوع');return}
+ const kindValue=kind==='sale'?'sale':'purchase';const partyType=kind==='sale'?'customer':'supplier';
+ note(msg,'جاري حفظ الفاتورة...');$('sale_save').disabled=true;$('purchase_save').disabled=true;
+ const {data:inv,error:invErr}=await db.from('invoices').insert({owner_id:user.id,kind:kindValue,party_id:partyId,party_type:partyType,subtotal,discount,total,paid,payment_method:$(prefix+'_method').value, note:val(prefix+'_note'),created_by:user.id}).select('id').single();
+ if(invErr){note(msg,'تعذر إنشاء الفاتورة: '+invErr.message);$('sale_save').disabled=false;$('purchase_save').disabled=false;return}
+ const items=cart.map(x=>({invoice_id:inv.id,product_id:x.product_id,qty:x.qty,unit_price:x.price,unit_cost:x.cost,line_total:x.qty*x.price,cost_total:x.qty*x.cost}));
+ const {error:itemErr}=await db.from('invoice_items').insert(items);
+ if(itemErr){await db.from('invoices').delete().eq('id',inv.id).eq('owner_id',user.id);note(msg,'لم تكتمل الفاتورة وتمت محاولة إلغاء رأسها. سبب الخطأ: '+itemErr.message+' — راجع المخزون قبل إعادة المحاولة.');$('sale_save').disabled=false;$('purchase_save').disabled=false;return}
+ invoiceCarts[kind]=[];drawCart(kind);$(prefix+'_discount').value='';$(prefix+'_paid').value='';$(prefix+'_note').value='';await loadKind('products');note(msg,'تم حفظ الفاتورة بنجاح. رقم الفاتورة: '+inv.id);$('sale_save').disabled=false;$('purchase_save').disabled=false;
+}
+$('sale_add').onclick=()=>addCartItem('sale');$('purchase_add').onclick=()=>addCartItem('purchase');$('sale_save').onclick=()=>saveInvoice('sale');$('purchase_save').onclick=()=>saveInvoice('purchase');
+$('sale_product').onchange=()=>{const p=pData.find(x=>x.id===$('sale_product').value);if(p)$('sale_price').value=p.price??0};
+$('purchase_product').onchange=()=>{const p=pData.find(x=>x.id===$('purchase_product').value);if(p)$('purchase_price').value=p.cost??0};
+
+// المصروفات والتحصيلات والخزنة
+function todayISO(){return new Date().toISOString().slice(0,10)}
+function addCell(tr,value){const td=document.createElement("td");td.textContent=value??"";tr.appendChild(td)}
+async function loadExpenses(){
+ const {data,error}=await db.from("expenses").select("expense_date,category,description,amount,payment_method").eq("owner_id",user.id).order("expense_date",{ascending:false}).limit(100);
+ if(error){note("e_msg","تعذر تحميل المصروفات: "+error.message);return}
+ $("e_rows").innerHTML="";
+ (data||[]).forEach(r=>{const tr=document.createElement("tr");addCell(tr,r.expense_date);addCell(tr,r.category);addCell(tr,r.description);addCell(tr,money(r.amount));addCell(tr,r.payment_method);$("e_rows").appendChild(tr)});
+ note("e_msg","عدد المصروفات المعروضة: "+(data||[]).length);
+}
+$("e_save").onclick=async()=>{
+ const amount=Number($("e_amount").value||0);
+ if(!$("e_category").value.trim()||!(amount>0)){note("e_msg","اكتب نوع المصروف ومبلغًا صحيحًا");return}
+ const payload={owner_id:user.id,category:$("e_category").value.trim(),amount,expense_date:$("e_date").value||todayISO(),description:$("e_description").value.trim(),payment_method:$("e_method").value};
+ $("e_save").disabled=true;note("e_msg","جاري الحفظ...");
+ const {error}=await db.from("expenses").insert(payload);
+ $("e_save").disabled=false;
+ if(error){note("e_msg","تعذر حفظ المصروف: "+error.message);return}
+ ["e_category","e_amount","e_description"].forEach(id=>$(id).value="");
+ await loadExpenses();await loadCash();
+ note("e_msg","تم حفظ المصروف. حركة الخزنة تعتمد على وجود Trigger المصروفات.");
+};
+function refreshPaymentParty(){
+ const isCustomer=$("pay_party_type").value==="customer";
+ fillSelect("pay_party",isCustomer?cData:sData,isCustomer?"اختر العميل":"اختر المورد");
+}
+$("pay_party_type").onchange=refreshPaymentParty;
+async function loadPayments(){
+ const {data,error}=await db.from("party_payments").select("party_type,party_id,operation_type,amount,operation_date,note").eq("owner_id",user.id).order("operation_date",{ascending:false}).limit(100);
+ if(error){note("pay_msg","تعذر تحميل العمليات: "+error.message);return}
+ $("pay_rows").innerHTML="";
+ (data||[]).forEach(r=>{
+  const tr=document.createElement("tr");
+  const party=(r.party_type==="customer"?cData:sData).find(x=>x.id===r.party_id);
+  addCell(tr,r.operation_date);addCell(tr,party?.name||"طرف غير موجود");
+  addCell(tr,r.party_type==="customer"?"عميل":"مورد");
+  addCell(tr,r.operation_type==="collection"?"تحصيل":"دفع");addCell(tr,money(r.amount));
+  $("pay_rows").appendChild(tr);
+ });
+ note("pay_msg","عدد العمليات المعروضة: "+(data||[]).length);
+}
+$("pay_save").onclick=async()=>{
+ const amount=Number($("pay_amount").value||0),partyId=$("pay_party").value;
+ if(!partyId||!(amount>0)){note("pay_msg","اختر العميل أو المورد واكتب مبلغًا صحيحًا");return}
+ const payload={owner_id:user.id,party_type:$("pay_party_type").value,party_id:partyId,operation_type:$("pay_operation").value,amount,payment_method:$("pay_method").value,operation_date:$("pay_date").value||todayISO(),note:$("pay_note").value.trim()};
+ $("pay_save").disabled=true;note("pay_msg","جاري الحفظ...");
+ const {error}=await db.from("party_payments").insert(payload);
+ $("pay_save").disabled=false;
+ if(error){note("pay_msg","تعذر حفظ العملية: "+error.message);return}
+ $("pay_amount").value="";$("pay_note").value="";
+ await loadPayments();await loadCash();
+ note("pay_msg","تم حفظ العملية. تحديث رصيد الطرف تلقائيًا غير مفعّل في هذه النسخة.");
+};
+async function loadCash(){
+ const {data,error}=await db.from("cash_transactions").select("transaction_type,amount,transaction_date,description,payment_method").eq("owner_id",user.id).order("transaction_date",{ascending:false}).limit(200);
+ if(error){note("cash_total","تعذر تحميل الخزنة: "+error.message);return}
+ $("cash_rows").innerHTML="";let income=0,expense=0;
+ (data||[]).forEach(r=>{
+  const tr=document.createElement("tr");addCell(tr,r.transaction_date);
+  addCell(tr,r.transaction_type==="income"?"وارد":"منصرف");
+  addCell(tr,r.description);addCell(tr,r.payment_method);addCell(tr,money(r.amount));
+  $("cash_rows").appendChild(tr);
+  if(r.transaction_type==="income")income+=Number(r.amount||0);else expense+=Number(r.amount||0);
+ });
+ $("cash_total").textContent="إجمالي الوارد المعروض: "+money(income)+" — إجمالي المنصرف المعروض: "+money(expense)+" — الصافي: "+money(income-expense);
+}
+const originalLoadAll=loadAll;
+loadAll=async function(){
+ await originalLoadAll();
+ $("e_date").value=todayISO();$("pay_date").value=todayISO();
+ refreshPaymentParty();
+ await Promise.all([loadExpenses(),loadPayments(),loadCash()]);
+};
+db.auth.getSession().then(({data})=>{if(data.session){user=data.session.user;$("login").classList.add("hidden");$("app").classList.remove("hidden");loadAll()}});
+</script>
+</body></html>
