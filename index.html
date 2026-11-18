@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مصنع الرواد ERP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- شاشة تسجيل الدخول -->
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">ر</div>
+      <h1>مصنع الرواد</h1>
+      <p>نظام إدارة المصنع</p>
+
+      <form id="loginForm">
+        <label for="loginEmail">البريد الإلكتروني</label>
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="أدخل البريد الإلكتروني"
+          required
+        >
+
+        <label for="loginPassword">كلمة المرور</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="أدخل كلمة المرور"
+          required
+        >
+
+        <button type="submit" id="loginButton">
+          تسجيل الدخول
+        </button>
+
+        <p id="loginMessage" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- واجهة النظام -->
+  <div class="app" id="mainApp" hidden>
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">ر</div>
+        <div>
+          <h2>مصنع الرواد</h2>
+          <small>نظام إدارة المصنع</small>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" data-page="dashboard">الرئيسية</button>
+        <button class="nav-btn" data-page="products">المنتجات</button>
+        <button class="nav-btn" data-page="warehouse">المخزن</button>
+        <button class="nav-btn" data-page="sales">فواتير البيع</button>
+        <button class="nav-btn" data-page="purchases">فواتير الشراء</button>
+        <button class="nav-btn" data-page="customers">العملاء</button>
+        <button class="nav-btn" data-page="suppliers">الموردون</button>
+        <button class="nav-btn" data-page="reports">التقارير</button>
+      </nav>
+
+      <div class="sidebar-footer">الإصدار 2.0</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">الرئيسية</h2>
+          <small>أهلاً بك في نظام مصنع الرواد</small>
+        </div>
+
+        <div class="user-area">
+          <span id="userEmail">مدير النظام</span>
+          <button id="logoutButton" type="button">تسجيل الخروج</button>
+        </div>
+      </header>
+
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle"></h3>
+        <button class="close-btn" id="closeModalButton" type="button">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
